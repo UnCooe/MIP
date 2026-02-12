@@ -1,0 +1,118 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "MIP Memory File",
+    "description": "MIP v0.1 — 用户 AI 记忆文件的 JSON Schema",
+    "type": "object",
+    "required": [
+        "$schema",
+        "version"
+    ],
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "const": "https://mip-protocol.org/v0.1/schema.json"
+        },
+        "version": {
+            "type": "string",
+            "pattern": "^\\d+\\.\\d+\\.\\d+$",
+            "description": "MIP 规范版本号 (SemVer)"
+        },
+        "identity": {
+            "type": "object",
+            "description": "用户身份信息 — 相对稳定的基础属性",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "用户姓名或昵称"
+                },
+                "language": {
+                    "type": "string",
+                    "description": "主要语言 (BCP 47)",
+                    "examples": [
+                        "zh-CN",
+                        "en-US",
+                        "ja"
+                    ]
+                },
+                "timezone": {
+                    "type": "string",
+                    "description": "时区 (IANA)",
+                    "examples": [
+                        "Asia/Shanghai",
+                        "America/New_York"
+                    ]
+                },
+                "role": {
+                    "type": "string",
+                    "description": "职业角色",
+                    "examples": [
+                        "前端工程师",
+                        "产品经理",
+                        "学生"
+                    ]
+                },
+                "industry": {
+                    "type": "string",
+                    "description": "所在行业"
+                },
+                "tech_stack": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "技术栈列表"
+                }
+            },
+            "additionalProperties": {
+                "type": "string"
+            }
+        },
+        "preferences": {
+            "type": "object",
+            "description": "用户偏好 — AI 应如何回复此用户",
+            "properties": {
+                "response_style": {
+                    "type": "string",
+                    "enum": [
+                        "concise",
+                        "detailed",
+                        "balanced"
+                    ],
+                    "description": "回复风格"
+                },
+                "formality": {
+                    "type": "string",
+                    "enum": [
+                        "formal",
+                        "casual",
+                        "adaptive"
+                    ],
+                    "description": "正式程度"
+                },
+                "code_comments_language": {
+                    "type": "string",
+                    "description": "代码注释语言 (BCP 47)"
+                },
+                "variable_names_language": {
+                    "type": "string",
+                    "description": "变量命名语言 (BCP 47)"
+                },
+                "explanation_depth": {
+                    "type": "string",
+                    "enum": [
+                        "beginner",
+                        "intermediate",
+                        "expert"
+                    ],
+                    "description": "解释深度"
+                }
+            },
+            "additionalProperties": true
+        },
+        "custom": {
+            "type": "object",
+            "description": "自定义扩展字段，键值对自由定义",
+            "additionalProperties": true
+        }
+    }
+}

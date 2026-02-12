@@ -1,0 +1,35 @@
+{
+    "$schema": "https://mip-protocol.org/v0.1/schema.json",
+    "version": "0.1.0",
+    "identity": {
+        "name": "张三",
+        "language": "zh-CN",
+        "timezone": "Asia/Shanghai",
+        "role": "前端工程师",
+        "industry": "互联网",
+        "tech_stack": [
+            "React",
+            "TypeScript",
+            "Next.js",
+            "Node.js",
+            "PostgreSQL"
+        ]
+    },
+    "preferences": {
+        "response_style": "concise",
+        "formality": "casual",
+        "code_comments_language": "zh-CN",
+        "variable_names_language": "en",
+        "explanation_depth": "intermediate"
+    },
+    "custom": {
+        "常用框架": "Next.js App Router",
+        "编辑器": "VS Code + Antigravity",
+        "关注领域": [
+            "AI 应用开发",
+            "Web3",
+            "产品设计"
+        ],
+        "工作模式": "先规划后执行，偏好详细的实施计划"
+    }
+}
