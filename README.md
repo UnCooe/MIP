@@ -233,6 +233,20 @@ You can also render the review as Markdown and write it to a file:
 node .\scripts\mip.mjs review bundle --format markdown --output .\review.md
 ```
 
+### Apply plan mode
+
+Before any future write command exists, you can classify which suggestions are even candidates for later apply:
+
+```powershell
+node .\scripts\mip.mjs plan apply
+```
+
+If you want a machine-readable artifact:
+
+```powershell
+node .\scripts\mip.mjs plan apply --format json --output .\apply-plan.json
+```
+
 ## Roadmap
 
 | Version | Focus |

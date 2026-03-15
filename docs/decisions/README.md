@@ -20,3 +20,4 @@ Records:
 - `0010-route-2-first-ships-as-suggestion-generation.md`
 - `0011-review-bundles-come-before-apply.md`
 - `0012-human-readable-review-comes-before-apply.md`
+- `0013-apply-starts-as-a-non-mutating-plan.md`

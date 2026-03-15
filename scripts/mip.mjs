@@ -17,6 +17,7 @@ Commands:
   suggest <class>    Generate a governed-writeback suggestion file
   pack suggestions   Bundle current suggestion files into a review artifact
   review bundle      Print a human-readable summary from a review bundle
+  plan apply         Build a non-mutating apply plan from a review bundle
 
 Suggestion classes:
   fact | observation | pending_confirmation
@@ -140,6 +141,12 @@ function main() {
   if (options.command === "review" && options.target === "bundle") {
     const args = options.passthrough.length > 0 ? options.passthrough : ['--input', resolve(process.cwd(), '.mip-suggestions', 'review-bundle.json')];
     runScript('review-bundle.mjs', args);
+    return;
+  }
+
+  if (options.command === "plan" && options.target === "apply") {
+    const args = options.passthrough.length > 0 ? options.passthrough : ['--input', resolve(process.cwd(), '.mip-suggestions', 'review-bundle.json')];
+    runScript('plan-apply.mjs', args);
     return;
   }
 
