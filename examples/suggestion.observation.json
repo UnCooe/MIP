@@ -1,0 +1,12 @@
+{
+  "schema": "mip-suggestion-draft/v0.1",
+  "class": "observation",
+  "entry": {
+    "key": "communication_style",
+    "value": "direct",
+    "source": "conversation_pattern",
+    "updated_at": "2026-03-15T00:00:00Z",
+    "notes": "Observation only. Does not overwrite explicit preference fields.",
+    "confidence": 0.78
+  }
+}

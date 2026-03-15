@@ -144,6 +144,7 @@ MIP can work without MCP. For MCP-enabled apps, MIP can also be exposed through 
 - [docs/research/](./docs/research/): public research notes and platform capability mapping
 - [schemas/memory.writeback.extension.schema.json](./schemas/memory.writeback.extension.schema.json): experimental governed-writeback schema draft
 - [examples/memory.writeback-extension.json](./examples/memory.writeback-extension.json): example file for the Route 2 draft
+- [examples/suggestion.observation.json](./examples/suggestion.observation.json): example output for the first `mip suggest` workflow
 
 ## Local workflow
 
@@ -201,6 +202,14 @@ To regenerate `MIP-CONTEXT.md` only:
 
 ```powershell
 node .\scripts\mip.mjs sync antigravity
+```
+
+### Suggest mode
+
+Route 2 now includes a minimal suggestion generator that writes candidate updates into `.mip-suggestions/` instead of mutating `memory.json` directly:
+
+```powershell
+node .\scripts\mip.mjs suggest observation --key communication_style --value direct --source conversation_pattern --confidence 0.78
 ```
 
 ## Roadmap
