@@ -16,3 +16,4 @@ Records:
 - `suggestion-bundle-draft.md`
 - `review-bundle-draft.md`
 - `apply-plan-draft.md`
+- `safe-auto-merge-subset-draft.md`

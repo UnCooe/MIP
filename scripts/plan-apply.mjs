@@ -2,6 +2,19 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const ORDER = ["fact", "observation", "pending_confirmation"];
+const SAFE_FACT_PREFIXES = ["facts."];
+const SAFE_FACT_PATHS = new Set([
+  "preferences.response_style",
+  "preferences.formality",
+  "preferences.code_comments_language",
+  "preferences.variable_names_language",
+]);
+const SAFE_FACT_SOURCES = new Set([
+  "user_statement",
+  "explicit_user_input",
+  "project_activity",
+  "verified_tooling",
+]);
 
 function getTargetPath(item) {
   return item.entry.target_path || "";
@@ -9,6 +22,13 @@ function getTargetPath(item) {
 
 function getDisplayLabel(item) {
   return item.entry.target_path || item.entry.key || "(missing_target_path)";
+}
+
+function isSafeFactTargetPath(targetPath) {
+  if (SAFE_FACT_PATHS.has(targetPath)) {
+    return true;
+  }
+  return SAFE_FACT_PREFIXES.some((prefix) => targetPath.startsWith(prefix));
 }
 
 function parseArgs(argv) {
@@ -71,15 +91,30 @@ function classifySuggestion(item) {
   }
 
   if (item.class === "fact") {
-    if (item.entry.evidence && item.entry.source) {
+    if (!item.entry.evidence || !item.entry.source) {
       return {
-        status: "eligible_for_future_apply",
-        rationale: "Fact suggestion includes target_path, evidence, and source metadata.",
+        status: "blocked",
+        rationale: "Fact suggestions must include target_path, evidence, and source metadata before any future apply step.",
       };
     }
+
+    if (!SAFE_FACT_SOURCES.has(item.entry.source)) {
+      return {
+        status: "review_only",
+        rationale: `Fact suggestion source '${item.entry.source}' is outside the current safe auto-merge source set.`,
+      };
+    }
+
+    if (!isSafeFactTargetPath(targetPath)) {
+      return {
+        status: "review_only",
+        rationale: `Fact target_path '${targetPath}' is outside the current safe auto-merge subset.`,
+      };
+    }
+
     return {
-      status: "blocked",
-      rationale: "Fact suggestions must include target_path, evidence, and source metadata before any future apply step.",
+      status: "eligible_for_future_apply",
+      rationale: "Fact suggestion is inside the current safe auto-merge subset and includes target_path, evidence, and source metadata.",
     };
   }
 
@@ -106,6 +141,11 @@ function buildPlan(bundle, inputPath) {
       review_only: 0,
       confirmation_required: 0,
       blocked: 0,
+    },
+    policy: {
+      safe_fact_prefixes: SAFE_FACT_PREFIXES,
+      safe_fact_paths: Array.from(SAFE_FACT_PATHS),
+      safe_fact_sources: Array.from(SAFE_FACT_SOURCES),
     },
     sections: {
       fact: [],
@@ -140,6 +180,9 @@ function renderText(plan) {
     `Input bundle: ${plan.input_bundle}`,
     `Created: ${plan.created_at}`,
     `Summary: eligible_for_future_apply=${plan.summary.eligible_for_future_apply}, review_only=${plan.summary.review_only}, confirmation_required=${plan.summary.confirmation_required}, blocked=${plan.summary.blocked}`,
+    `Safe fact prefixes: ${plan.policy.safe_fact_prefixes.join(", ")}`,
+    `Safe fact paths: ${plan.policy.safe_fact_paths.join(", ")}`,
+    `Safe fact sources: ${plan.policy.safe_fact_sources.join(", ")}`,
   ];
 
   for (const section of ORDER) {

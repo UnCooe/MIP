@@ -62,6 +62,24 @@ Examples:
 - Inferred summaries should land in an observation layer or a suggestion artifact.
 - Conflicts must trigger confirmation before changing the source of truth.
 - User-edited memory outranks inferred memory.
+- Even verifiable facts should not be treated as globally safe to merge. Auto-merge candidates must belong to an explicit safe target-path subset.
+
+## Current Safe Auto-Merge Subset
+
+Near-term Route 2 drafts should treat only these fact targets as candidates for future apply:
+
+- `facts.*`
+- `preferences.response_style`
+- `preferences.formality`
+- `preferences.code_comments_language`
+- `preferences.variable_names_language`
+
+And only when the source is one of:
+
+- `user_statement`
+- `explicit_user_input`
+- `project_activity`
+- `verified_tooling`
 
 ## Local Workflow
 

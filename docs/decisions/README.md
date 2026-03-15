@@ -22,3 +22,4 @@ Records:
 - `0012-human-readable-review-comes-before-apply.md`
 - `0013-apply-starts-as-a-non-mutating-plan.md`
 - `0014-route-2-requires-target-paths-for-future-apply.md`
+- `0015-route-2-uses-an-explicit-safe-auto-merge-subset.md`

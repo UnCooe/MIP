@@ -249,6 +249,8 @@ node .\scripts\mip.mjs plan apply --format json --output .\apply-plan.json
 
 Current Route 2 drafts use `target_path` for new suggestions. Legacy `key`-based suggestion files are still readable, but they are not sufficient for future apply eligibility.
 
+`plan apply` is intentionally narrow. Right now it only treats a small safe fact subset as future apply candidates, and leaves the rest as review-only or confirmation-required.
+
 ## Roadmap
 
 | Version | Focus |
