@@ -12,7 +12,7 @@
       "file": "2026-03-15T00-00-00-000Z-fact.json",
       "class": "fact",
       "entry": {
-        "key": "current_focus",
+        "target_path": "facts.current_focus",
         "value": "AI systems and infrastructure roles",
         "source": "user_statement",
         "updated_at": "2026-03-15T00:00:00Z",
@@ -23,7 +23,7 @@
       "file": "2026-03-15T00-00-00-100Z-observation.json",
       "class": "observation",
       "entry": {
-        "key": "communication_style",
+        "target_path": "observations.communication_style",
         "value": "direct",
         "source": "conversation_pattern",
         "updated_at": "2026-03-15T00:00:00Z",
@@ -35,7 +35,7 @@
       "file": "2026-03-15T00-00-00-200Z-pending_confirmation.json",
       "class": "pending_confirmation",
       "entry": {
-        "key": "long_term_goal",
+        "target_path": "pending_confirmation.long_term_goal",
         "value": "Founding a startup",
         "source": "assistant_inference",
         "updated_at": "2026-03-15T00:00:00Z",

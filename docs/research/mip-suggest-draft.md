@@ -10,7 +10,7 @@ Provide a minimal command that creates a structured writeback suggestion without
 ## Command Shape
 
 ```powershell
-node .\scripts\mip.mjs suggest observation --key communication_style --value direct --source conversation_pattern --confidence 0.78
+node .\scripts\mip.mjs suggest observation --target-path observations.communication_style --value direct --source conversation_pattern --confidence 0.78
 ```
 
 ## Output
@@ -22,6 +22,8 @@ The payload is intentionally small:
 - `entry`
 
 This keeps the first implementation easy to inspect and easy to discard if the format needs to change.
+
+New suggestions should use `target_path` rather than a free-form key so later planning and merge logic can reason about where an update belongs.
 
 ## Why This Matters
 

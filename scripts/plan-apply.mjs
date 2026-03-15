@@ -3,6 +3,14 @@ import { resolve } from "node:path";
 
 const ORDER = ["fact", "observation", "pending_confirmation"];
 
+function getTargetPath(item) {
+  return item.entry.target_path || "";
+}
+
+function getDisplayLabel(item) {
+  return item.entry.target_path || item.entry.key || "(missing_target_path)";
+}
+
 function parseArgs(argv) {
   const options = {
     input: resolve(process.cwd(), ".mip-suggestions", "review-bundle.json"),
@@ -54,16 +62,24 @@ function loadBundle(path) {
 }
 
 function classifySuggestion(item) {
+  const targetPath = getTargetPath(item);
+  if (!targetPath) {
+    return {
+      status: "blocked",
+      rationale: "Suggestion is missing target_path, so it cannot be mapped back into user-controlled memory safely.",
+    };
+  }
+
   if (item.class === "fact") {
     if (item.entry.evidence && item.entry.source) {
       return {
         status: "eligible_for_future_apply",
-        rationale: "Fact suggestion includes evidence and source metadata.",
+        rationale: "Fact suggestion includes target_path, evidence, and source metadata.",
       };
     }
     return {
       status: "blocked",
-      rationale: "Fact suggestions must include evidence and source metadata before any future apply step.",
+      rationale: "Fact suggestions must include target_path, evidence, and source metadata before any future apply step.",
     };
   }
 
@@ -104,7 +120,8 @@ function buildPlan(bundle, inputPath) {
     const targetSection = plan.sections[item.class] ?? [];
     targetSection.push({
       file: item.file,
-      key: item.entry.key,
+      target_path: getTargetPath(item),
+      display_label: getDisplayLabel(item),
       value: item.entry.value,
       source: item.entry.source,
       decision: decision.status,
@@ -134,7 +151,7 @@ function renderText(plan) {
       continue;
     }
     for (const item of items) {
-      lines.push(`- ${item.key}: ${item.value}`);
+      lines.push(`- ${item.display_label}: ${item.value}`);
       lines.push(`  file: ${item.file}`);
       lines.push(`  source: ${item.source}`);
       lines.push(`  decision: ${item.decision}`);

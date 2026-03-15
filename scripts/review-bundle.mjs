@@ -3,6 +3,10 @@ import { resolve } from "node:path";
 
 const ORDER = ["fact", "observation", "pending_confirmation"];
 
+function getTargetLabel(item) {
+  return item.entry.target_path || item.entry.key || "(missing_target_path)";
+}
+
 function parseArgs(argv) {
   const options = {
     input: resolve(process.cwd(), ".mip-suggestions", "review-bundle.json"),
@@ -65,8 +69,9 @@ function groupSuggestions(bundle) {
 }
 
 function buildEntryLines(item) {
+  const targetLabel = getTargetLabel(item);
   const lines = [
-    `- ${item.entry.key}: ${item.entry.value}`,
+    `- ${targetLabel}: ${item.entry.value}`,
     `  file: ${item.file}`,
     `  source: ${item.entry.source}`,
   ];
@@ -128,7 +133,7 @@ function renderMarkdown(bundle, grouped, inputPath) {
       continue;
     }
     for (const item of items) {
-      lines.push(`- **${item.entry.key}**: ${item.entry.value}`);
+      lines.push(`- **${getTargetLabel(item)}**: ${item.entry.value}`);
       lines.push(`  - file: \`${item.file}\``);
       lines.push(`  - source: \`${item.entry.source}\``);
       if (item.entry.evidence) {

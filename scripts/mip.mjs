@@ -26,7 +26,8 @@ Options:
   --input <path>       Memory source file or bundle path when reviewing (default varies by command)
   --cwd <path>         Target project directory (default: current working directory)
   --force              Allow AGENTS.md block append when no markers exist
-  --key <text>         Suggestion key
+  --target-path <path> Logical memory path for suggestion generation
+  --key <path>         Deprecated alias for --target-path
   --value <text>       Suggestion value
   --source <text>      Suggestion source label
   --notes <text>       Optional suggestion note
@@ -116,6 +117,16 @@ function runScript(scriptName, args) {
   }
 }
 
+function getDefaultBundlePath() {
+  return resolve(process.cwd(), ".mip-suggestions", "review-bundle.json");
+}
+
+function getBundleScriptArgs(options) {
+  const defaultMemoryInput = resolve(homedir(), ".mip", "memory.json");
+  const input = options.input === defaultMemoryInput ? getDefaultBundlePath() : options.input;
+  return ["--input", input, ...options.passthrough];
+}
+
 function main() {
   const options = parseArgs(process.argv.slice(2));
   if (options.help) {
@@ -139,14 +150,12 @@ function main() {
   }
 
   if (options.command === "review" && options.target === "bundle") {
-    const args = options.passthrough.length > 0 ? options.passthrough : ['--input', resolve(process.cwd(), '.mip-suggestions', 'review-bundle.json')];
-    runScript('review-bundle.mjs', args);
+    runScript('review-bundle.mjs', getBundleScriptArgs(options));
     return;
   }
 
   if (options.command === "plan" && options.target === "apply") {
-    const args = options.passthrough.length > 0 ? options.passthrough : ['--input', resolve(process.cwd(), '.mip-suggestions', 'review-bundle.json')];
-    runScript('plan-apply.mjs', args);
+    runScript('plan-apply.mjs', getBundleScriptArgs(options));
     return;
   }
 

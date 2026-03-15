@@ -6,7 +6,7 @@ const CLASSES = new Set(["fact", "observation", "pending_confirmation"]);
 function parseArgs(argv) {
   const options = {
     className: argv[0],
-    key: "",
+    targetPath: "",
     value: "",
     source: "manual",
     notes: "",
@@ -18,8 +18,13 @@ function parseArgs(argv) {
 
   for (let index = 1; index < argv.length; index += 1) {
     const arg = argv[index];
+    if (arg === "--target-path" && argv[index + 1]) {
+      options.targetPath = argv[index + 1];
+      index += 1;
+      continue;
+    }
     if (arg === "--key" && argv[index + 1]) {
-      options.key = argv[index + 1];
+      options.targetPath = argv[index + 1];
       index += 1;
       continue;
     }
@@ -69,9 +74,11 @@ function parseArgs(argv) {
 
 function printHelp() {
   console.log(`Usage:
-  node .\\scripts\\suggest-memory.mjs <fact|observation|pending_confirmation> --key <key> --value <value> [options]
+  node .\\scripts\\suggest-memory.mjs <fact|observation|pending_confirmation> --target-path <path> --value <value> [options]
 
 Options:
+  --target-path <path> Logical memory path, such as preferences.response_style
+  --key <path>         Deprecated alias for --target-path
   --source <text>      Source label (default: manual)
   --notes <text>       Optional note
   --evidence <text>    Required for fact
@@ -85,8 +92,8 @@ function ensureValid(options) {
   if (!CLASSES.has(options.className)) {
     throw new Error(`Unsupported suggestion class: ${options.className}`);
   }
-  if (!options.key || !options.value) {
-    throw new Error("Both --key and --value are required.");
+  if (!options.targetPath || !options.value) {
+    throw new Error("Both --target-path and --value are required.");
   }
   if (options.className === "fact" && !options.evidence) {
     throw new Error("--evidence is required for fact suggestions.");
@@ -109,7 +116,7 @@ function getDefaultOutputPath(className) {
 
 function buildEntry(options) {
   const entry = {
-    key: options.key,
+    target_path: options.targetPath,
     value: options.value,
     source: options.source,
     updated_at: new Date().toISOString(),

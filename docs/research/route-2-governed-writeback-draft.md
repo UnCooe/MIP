@@ -51,7 +51,7 @@ Examples:
 ## Proposed Metadata
 
 ### Shared
-- `key`
+- `target_path`
 - `value`
 - `source`
 - `updated_at`
@@ -70,6 +70,12 @@ Examples:
 
 Route 2 is important, but it is still easier to get wrong than Route 1.
 Keeping this model in an extension draft allows iteration without destabilizing the read path already validated in Route 1.
+
+## Target Path Constraint
+
+Route 2 should not rely on free-form keys forever.
+Suggestions need a logical `target_path` so future merge behavior can reason about where a candidate belongs in user-controlled memory.
+Legacy `key` usage may remain temporarily for compatibility, but it should not be treated as sufficient for future apply semantics.
 
 ## Draft Assets
 

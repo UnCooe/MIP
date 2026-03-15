@@ -20,9 +20,16 @@
   "definitions": {
     "baseEntry": {
       "type": "object",
-      "required": ["key", "value", "source", "updated_at"],
+      "required": ["target_path", "value", "source", "updated_at"],
       "properties": {
-        "key": { "type": "string" },
+        "target_path": {
+          "type": "string",
+          "description": "Logical path into the user-controlled memory structure, such as preferences.response_style or facts.current_focus."
+        },
+        "key": {
+          "type": "string",
+          "description": "Deprecated legacy field retained for transition only. Use target_path instead."
+        },
         "value": {},
         "source": { "type": "string" },
         "updated_at": { "type": "string", "format": "date-time" },

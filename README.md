@@ -210,7 +210,7 @@ node .\scripts\mip.mjs sync antigravity
 Route 2 now includes a minimal suggestion generator that writes candidate updates into `.mip-suggestions/` instead of mutating `memory.json` directly:
 
 ```powershell
-node .\scripts\mip.mjs suggest observation --key communication_style --value direct --source conversation_pattern --confidence 0.78
+node .\scripts\mip.mjs suggest observation --target-path observations.communication_style --value direct --source conversation_pattern --confidence 0.78
 ```
 
 ### Review bundle mode
@@ -246,6 +246,8 @@ If you want a machine-readable artifact:
 ```powershell
 node .\scripts\mip.mjs plan apply --format json --output .\apply-plan.json
 ```
+
+Current Route 2 drafts use `target_path` for new suggestions. Legacy `key`-based suggestion files are still readable, but they are not sufficient for future apply eligibility.
 
 ## Roadmap
 

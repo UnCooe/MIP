@@ -24,9 +24,10 @@ node .\scripts\mip.mjs plan apply --format json --output .\apply-plan.json
 - `fact` with evidence and source: `eligible_for_future_apply`
 - `observation`: `review_only`
 - `pending_confirmation`: `confirmation_required`
+- any suggestion without `target_path`: `blocked`
 - malformed fact without evidence: `blocked`
 
 ## Why This Matters
 
 This layer makes the write boundary concrete without claiming safe merge behavior that does not exist yet.
-It also exposes an important limitation in the current draft: suggestion keys are still too loosely structured for trustworthy automatic field mapping.
+It also makes the current constraint explicit: future merge behavior needs `target_path`, not just a human-readable free-form key.
