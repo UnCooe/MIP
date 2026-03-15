@@ -221,6 +221,12 @@ When there are multiple suggestion files, you can bundle them into one review ar
 node .\scripts\mip.mjs pack suggestions
 ```
 
+Then print a grouped human-readable summary before any future apply step:
+
+```powershell
+node .\scripts\mip.mjs review bundle
+```
+
 ## Roadmap
 
 | Version | Focus |

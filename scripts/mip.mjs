@@ -16,12 +16,13 @@ Commands:
   check antigravity  Experimental: inspect AGENTS.md and report likely integration or conflict risks
   suggest <class>    Generate a governed-writeback suggestion file
   pack suggestions   Bundle current suggestion files into a review artifact
+  review bundle      Print a human-readable summary from a review bundle
 
 Suggestion classes:
   fact | observation | pending_confirmation
 
 Options:
-  --input <path>       Memory source file (default: ${resolve(homedir(), ".mip", "memory.json")})
+  --input <path>       Memory source file or bundle path when reviewing (default varies by command)
   --cwd <path>         Target project directory (default: current working directory)
   --force              Allow AGENTS.md block append when no markers exist
   --key <text>         Suggestion key
@@ -132,6 +133,12 @@ function main() {
 
   if (options.command === "pack" && options.target === "suggestions") {
     runScript('pack-suggestions.mjs', options.passthrough);
+    return;
+  }
+
+  if (options.command === "review" && options.target === "bundle") {
+    const args = options.passthrough.length > 0 ? options.passthrough : ['--input', resolve(process.cwd(), '.mip-suggestions', 'review-bundle.json')];
+    runScript('review-bundle.mjs', args);
     return;
   }
 
