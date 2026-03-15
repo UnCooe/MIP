@@ -1,0 +1,26 @@
+# User MIP Context
+
+This file is generated from the user's MIP source of truth.
+If local history or inferred memory conflicts with this file, prefer this file for stable preferences and explicit self-corrections.
+Use confirmation before changing high-risk identity claims or long-term preferences.
+
+## Identity
+- name: Your Name
+- language: zh-CN
+- timezone: Asia/Shanghai
+- role: Frontend Engineer
+- industry: Software
+- tech_stack: React, TypeScript, Next.js
+
+## Preferences
+- response_style: concise
+- formality: casual
+- code_comments_language: zh-CN
+- variable_names_language: en
+- explanation_depth: intermediate
+
+## Custom
+- editor: VS Code
+- primary_tools: Codex, Antigravity
+- work_style: Plan first, then execute
+- self_corrections: Do not infer my stable identity from hypothetical examples., If prior memory conflicts with this file, prefer this file.

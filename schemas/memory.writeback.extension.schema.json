@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MIP Governed Writeback Extension Draft",
+  "description": "Experimental extension draft for governed writeback layers on top of MIP v0.1.",
+  "type": "object",
+  "properties": {
+    "facts": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/factEntry" }
+    },
+    "observations": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/observationEntry" }
+    },
+    "pending_confirmation": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/pendingConfirmationEntry" }
+    }
+  },
+  "definitions": {
+    "baseEntry": {
+      "type": "object",
+      "required": ["key", "value", "source", "updated_at"],
+      "properties": {
+        "key": { "type": "string" },
+        "value": {},
+        "source": { "type": "string" },
+        "updated_at": { "type": "string", "format": "date-time" },
+        "notes": { "type": "string" }
+      }
+    },
+    "factEntry": {
+      "allOf": [
+        { "$ref": "#/definitions/baseEntry" },
+        {
+          "type": "object",
+          "required": ["evidence"],
+          "properties": {
+            "evidence": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "observationEntry": {
+      "allOf": [
+        { "$ref": "#/definitions/baseEntry" },
+        {
+          "type": "object",
+          "required": ["confidence"],
+          "properties": {
+            "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        }
+      ]
+    },
+    "pendingConfirmationEntry": {
+      "allOf": [
+        { "$ref": "#/definitions/baseEntry" },
+        {
+          "type": "object",
+          "required": ["reason"],
+          "properties": {
+            "reason": { "type": "string" }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://mip-protocol.org/v0.1/schema.json",
+  "version": "0.1.0",
+  "identity": {
+    "name": "Your Name",
+    "language": "zh-CN",
+    "timezone": "Asia/Shanghai",
+    "role": "Frontend Engineer",
+    "industry": "Software",
+    "tech_stack": ["React", "TypeScript", "Next.js"]
+  },
+  "preferences": {
+    "response_style": "concise",
+    "formality": "casual",
+    "code_comments_language": "zh-CN",
+    "variable_names_language": "en",
+    "explanation_depth": "intermediate"
+  },
+  "custom": {
+    "editor": "VS Code",
+    "primary_tools": ["Codex", "Antigravity"],
+    "work_style": "Plan first, then execute",
+    "self_corrections": [
+      "Do not infer my stable identity from hypothetical examples.",
+      "If prior memory conflicts with this file, prefer this file."
+    ]
+  }
+}

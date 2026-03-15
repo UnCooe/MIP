@@ -136,7 +136,72 @@ MIP can work without MCP. For MCP-enabled apps, MIP can also be exposed through 
 - [RFC-0001-MIP-full-vision.md](./RFC-0001-MIP-full-vision.md): long-term vision
 - [schemas/memory.schema.json](./schemas/memory.schema.json): JSON Schema
 - [examples/memory.json](./examples/memory.json): example file
+- [examples/memory.template.json](./examples/memory.template.json): starter template for real local use
 - [mcp-server/](./mcp-server/): MCP proof of concept
+- [docs/maintenance-rules.md](./docs/maintenance-rules.md): current writeback policy and memory maintenance rules
+- [docs/decisions/](./docs/decisions/): public design decisions and tradeoffs
+- [docs/evolution/](./docs/evolution/): public evolution notes and framing changes
+- [docs/research/](./docs/research/): public research notes and platform capability mapping
+- [schemas/memory.writeback.extension.schema.json](./schemas/memory.writeback.extension.schema.json): experimental governed-writeback schema draft
+- [examples/memory.writeback-extension.json](./examples/memory.writeback-extension.json): example file for the Route 2 draft
+
+## Local workflow
+
+If you want to use MIP with project-aware AI tools today, keep one source of truth in `~/.mip/memory.json`, then generate a project-level context file:
+
+```powershell
+node .\scripts\build-context.mjs
+```
+
+That command writes `MIP-CONTEXT.md` in the current project.
+
+### Check mode
+
+Before writing into an existing project, you can inspect the current `AGENTS.md` for likely overlap or conflict signals:
+
+```powershell
+node .\scripts\mip.mjs check codex
+```
+
+This does not make decisions for you. It reports whether `AGENTS.md` exists, whether current or legacy MIP blocks are present, and whether obvious exclusive or overlapping rule phrases were detected.
+
+### Codex workflow
+
+Codex is the first validated Route 1 target in this repository.
+Use the CLI entrypoint to initialize or sync a project:
+
+```powershell
+node .\scripts\mip.mjs init codex
+```
+
+To regenerate `MIP-CONTEXT.md` without changing `AGENTS.md`:
+
+```powershell
+node .\scripts\mip.mjs sync codex
+```
+
+You can also point the command at a template or alternate source:
+
+```powershell
+node .\scripts\mip.mjs init codex --input .\examples\memory.template.json --cwd .
+```
+
+If a project already has an `AGENTS.md`, the script preserves existing content and only updates the explicit `MIP User Context Source Of Truth` block. Legacy MIP markers are upgraded automatically when touched by the current tooling.
+
+### Antigravity workflow
+
+Antigravity support is currently experimental.
+It reuses the same project-local `AGENTS.md` + `MIP-CONTEXT.md` pattern that was observed to work in local testing:
+
+```powershell
+node .\scripts\mip.mjs init antigravity
+```
+
+To regenerate `MIP-CONTEXT.md` only:
+
+```powershell
+node .\scripts\mip.mjs sync antigravity
+```
 
 ## Roadmap
 
@@ -163,4 +228,5 @@ Open an [issue](https://github.com/UnCooe/MIP/issues) if you want to discuss ado
 ## License
 
 [CC-BY-SA 4.0](./LICENSE)
+
 

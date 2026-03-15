@@ -1,0 +1,124 @@
+import { homedir } from "node:os";
+import { resolve } from "node:path";
+import { inspectAgentsFile, syncProjectContext, updateAgentsFile } from "./init-codex.mjs";
+
+function printHelp() {
+  console.log(`Usage:
+  node .\\scripts\\mip.mjs <command> <target> [options]
+
+Commands:
+  init codex         Generate MIP-CONTEXT.md and add or update the MIP block in AGENTS.md
+  sync codex         Regenerate MIP-CONTEXT.md only
+  check codex        Inspect AGENTS.md and report likely integration or conflict risks
+  init antigravity   Experimental: use the same project-local files observed to work in local testing
+  sync antigravity   Experimental: regenerate MIP-CONTEXT.md only
+  check antigravity  Experimental: inspect AGENTS.md and report likely integration or conflict risks
+
+Options:
+  --input <path>  Memory source file (default: ${resolve(homedir(), ".mip", "memory.json")})
+  --cwd <path>    Target project directory (default: current working directory)
+  --force         Allow AGENTS.md block append when no markers exist
+`);
+}
+
+function parseArgs(argv) {
+  const options = {
+    help: argv.includes("--help"),
+    command: argv[0],
+    target: argv[1],
+    input: resolve(homedir(), ".mip", "memory.json"),
+    cwd: process.cwd(),
+    force: false,
+  };
+
+  for (let index = 2; index < argv.length; index += 1) {
+    const arg = argv[index];
+    if (arg === "--input" && argv[index + 1]) {
+      options.input = resolve(argv[index + 1]);
+      index += 1;
+      continue;
+    }
+    if (arg === "--cwd" && argv[index + 1]) {
+      options.cwd = resolve(argv[index + 1]);
+      index += 1;
+      continue;
+    }
+    if (arg === "--force") {
+      options.force = true;
+      continue;
+    }
+  }
+
+  return options;
+}
+
+function isProjectFileTarget(target) {
+  return target === "codex" || target === "antigravity";
+}
+
+function printExperimentalNotice(target) {
+  if (target === "antigravity") {
+    console.log("Antigravity support is currently experimental and based on local project-directory validation, not a fully confirmed official entry-point contract.");
+  }
+}
+
+function printCheckReport(target, report) {
+  console.log(`Target: ${target}`);
+  console.log(`AGENTS.md path: ${report.agentsPath}`);
+  console.log(`AGENTS.md exists: ${report.exists ? "yes" : "no"}`);
+  console.log(`Current MIP block: ${report.hasCurrentMarkers ? "yes" : "no"}`);
+  console.log(`Legacy MIP block: ${report.hasLegacyMarkers ? "yes" : "no"}`);
+
+  if (report.warnings.length === 0) {
+    console.log("Warnings: none");
+    return;
+  }
+
+  console.log("Warnings:");
+  for (const warning of report.warnings) {
+    console.log(`- ${warning}`);
+  }
+}
+
+function main() {
+  const options = parseArgs(process.argv.slice(2));
+  if (options.help) {
+    printHelp();
+    process.exit(0);
+  }
+
+  if (!options.command || !options.target) {
+    printHelp();
+    process.exit(1);
+  }
+
+  if (!isProjectFileTarget(options.target)) {
+    throw new Error(`Unsupported target: ${options.target}`);
+  }
+
+  printExperimentalNotice(options.target);
+
+  if (options.command === "check") {
+    const report = inspectAgentsFile(options.cwd);
+    printCheckReport(options.target, report);
+    return;
+  }
+
+  if (options.command === "sync") {
+    const output = syncProjectContext(options);
+    console.log(`Generated ${output} from ${options.input}`);
+    return;
+  }
+
+  if (options.command === "init") {
+    const output = syncProjectContext(options);
+    const status = updateAgentsFile(options.cwd, { force: options.force });
+    console.log(`Generated ${output} from ${options.input}`);
+    console.log(`${options.target} project initialized in ${options.cwd} (${status} AGENTS.md block).`);
+    return;
+  }
+
+  throw new Error(`Unsupported command: ${options.command}`);
+}
+
+main();

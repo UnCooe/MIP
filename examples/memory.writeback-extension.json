@@ -1,0 +1,44 @@
+{
+  "$schema": "https://mip-protocol.org/v0.1/schema.json",
+  "version": "0.1.0",
+  "identity": {
+    "name": "Jane",
+    "language": "en-US",
+    "role": "AI Application Engineer"
+  },
+  "preferences": {
+    "response_style": "concise",
+    "formality": "casual"
+  },
+  "custom": {
+    "editor": "VS Code"
+  },
+  "facts": [
+    {
+      "key": "current_focus",
+      "value": "AI systems and infrastructure roles",
+      "source": "user_statement",
+      "evidence": "User explicitly stated current job-search focus.",
+      "updated_at": "2026-03-15T00:00:00Z"
+    }
+  ],
+  "observations": [
+    {
+      "key": "communication_style",
+      "value": "direct",
+      "source": "conversation_pattern",
+      "confidence": 0.78,
+      "updated_at": "2026-03-15T00:00:00Z",
+      "notes": "Observation only. Does not overwrite explicit preference fields."
+    }
+  ],
+  "pending_confirmation": [
+    {
+      "key": "long_term_goal",
+      "value": "Founding a startup",
+      "source": "assistant_inference",
+      "reason": "High-impact long-term goal inferred from a small sample and should not be committed automatically.",
+      "updated_at": "2026-03-15T00:00:00Z"
+    }
+  ]
+}
