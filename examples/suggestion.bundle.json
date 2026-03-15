@@ -1,0 +1,46 @@
+{
+  "schema": "mip-suggestion-bundle-draft/v0.1",
+  "created_at": "2026-03-15T00:00:00Z",
+  "input_dir": ".mip-suggestions",
+  "summary": {
+    "fact": 1,
+    "observation": 1,
+    "pending_confirmation": 1
+  },
+  "suggestions": [
+    {
+      "file": "2026-03-15T00-00-00-000Z-fact.json",
+      "class": "fact",
+      "entry": {
+        "key": "current_focus",
+        "value": "AI systems and infrastructure roles",
+        "source": "user_statement",
+        "updated_at": "2026-03-15T00:00:00Z",
+        "evidence": "User explicitly stated current job-search focus."
+      }
+    },
+    {
+      "file": "2026-03-15T00-00-00-100Z-observation.json",
+      "class": "observation",
+      "entry": {
+        "key": "communication_style",
+        "value": "direct",
+        "source": "conversation_pattern",
+        "updated_at": "2026-03-15T00:00:00Z",
+        "confidence": 0.78,
+        "notes": "Observation only."
+      }
+    },
+    {
+      "file": "2026-03-15T00-00-00-200Z-pending_confirmation.json",
+      "class": "pending_confirmation",
+      "entry": {
+        "key": "long_term_goal",
+        "value": "Founding a startup",
+        "source": "assistant_inference",
+        "updated_at": "2026-03-15T00:00:00Z",
+        "reason": "High-impact long-term goal inferred from a small sample and should not be committed automatically."
+      }
+    }
+  ]
+}

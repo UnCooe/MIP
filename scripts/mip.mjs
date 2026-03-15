@@ -15,6 +15,7 @@ Commands:
   sync antigravity   Experimental: regenerate MIP-CONTEXT.md only
   check antigravity  Experimental: inspect AGENTS.md and report likely integration or conflict risks
   suggest <class>    Generate a governed-writeback suggestion file
+  pack suggestions   Bundle current suggestion files into a review artifact
 
 Suggestion classes:
   fact | observation | pending_confirmation
@@ -30,7 +31,8 @@ Options:
   --evidence <text>    Required for fact suggestions
   --confidence <0-1>   Required for observation suggestions
   --reason <text>      Required for pending_confirmation suggestions
-  --output <path>      Optional explicit suggestion output path
+  --output <path>      Optional explicit output path
+  --input-dir <path>   Optional suggestion directory for pack
 `);
 }
 
@@ -99,9 +101,9 @@ function printCheckReport(target, report) {
   }
 }
 
-function runSuggest(target, passthrough) {
-  const scriptPath = resolve(import.meta.dirname, "suggest-memory.mjs");
-  const result = spawnSync(process.execPath, [scriptPath, target, ...passthrough], {
+function runScript(scriptName, args) {
+  const scriptPath = resolve(import.meta.dirname, scriptName);
+  const result = spawnSync(process.execPath, [scriptPath, ...args], {
     cwd: process.cwd(),
     stdio: "inherit",
   });
@@ -124,7 +126,12 @@ function main() {
   }
 
   if (options.command === "suggest") {
-    runSuggest(options.target, options.passthrough);
+    runScript('suggest-memory.mjs', [options.target, ...options.passthrough]);
+    return;
+  }
+
+  if (options.command === "pack" && options.target === "suggestions") {
+    runScript('pack-suggestions.mjs', options.passthrough);
     return;
   }
 

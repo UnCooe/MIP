@@ -145,6 +145,7 @@ MIP can work without MCP. For MCP-enabled apps, MIP can also be exposed through 
 - [schemas/memory.writeback.extension.schema.json](./schemas/memory.writeback.extension.schema.json): experimental governed-writeback schema draft
 - [examples/memory.writeback-extension.json](./examples/memory.writeback-extension.json): example file for the Route 2 draft
 - [examples/suggestion.observation.json](./examples/suggestion.observation.json): example output for the first `mip suggest` workflow
+- [examples/suggestion.bundle.json](./examples/suggestion.bundle.json): example review bundle for multiple suggestions
 
 ## Local workflow
 
@@ -210,6 +211,14 @@ Route 2 now includes a minimal suggestion generator that writes candidate update
 
 ```powershell
 node .\scripts\mip.mjs suggest observation --key communication_style --value direct --source conversation_pattern --confidence 0.78
+```
+
+### Review bundle mode
+
+When there are multiple suggestion files, you can bundle them into one review artifact:
+
+```powershell
+node .\scripts\mip.mjs pack suggestions
 ```
 
 ## Roadmap

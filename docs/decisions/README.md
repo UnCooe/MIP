@@ -18,3 +18,4 @@ Records:
 - `0008-project-rules-outrank-user-preferences-for-repository-specific-work.md`
 - `0009-route-2-starts-as-an-extension-draft.md`
 - `0010-route-2-first-ships-as-suggestion-generation.md`
+- `0011-review-bundles-come-before-apply.md`
