@@ -34,6 +34,7 @@ Options:
   --reason <text>      Required for pending_confirmation suggestions
   --output <path>      Optional explicit output path
   --input-dir <path>   Optional suggestion directory for pack
+  --format <type>      Review output format: text or markdown
 `);
 }
 

@@ -227,6 +227,12 @@ Then print a grouped human-readable summary before any future apply step:
 node .\scripts\mip.mjs review bundle
 ```
 
+You can also render the review as Markdown and write it to a file:
+
+```powershell
+node .\scripts\mip.mjs review bundle --format markdown --output .\review.md
+```
+
 ## Roadmap
 
 | Version | Focus |

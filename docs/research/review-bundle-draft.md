@@ -13,6 +13,12 @@ Turn a suggestion bundle into a readable review summary that humans can scan qui
 node .\scripts\mip.mjs review bundle
 ```
 
+Optional output-oriented form:
+
+```powershell
+node .\scripts\mip.mjs review bundle --format markdown --output .\review.md
+```
+
 ## Output
 
 The command prints a grouped summary in three sections:
@@ -21,6 +27,7 @@ The command prints a grouped summary in three sections:
 - `pending_confirmation`
 
 Each entry includes the suggestion file name and the metadata needed to judge whether it should eventually be accepted, revised, or rejected.
+The current draft also supports `markdown` output so review artifacts can be saved and shared without introducing `apply`.
 
 ## Why This Matters
 
