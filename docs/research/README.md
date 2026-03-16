@@ -22,3 +22,4 @@ Records:
 - `approval-artifact-draft.md`
 - `resolution-artifact-draft.md`
 - `selective-memory-consultation-draft.md`
+- `selective-rendering-draft.md`

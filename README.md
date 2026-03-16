@@ -168,6 +168,13 @@ node .\scripts\build-context.mjs
 ```
 
 That command writes `MIP-CONTEXT.md` in the current project.
+The default output is now selective: always-on guidance first, on-demand sections later.
+
+If you explicitly need the older full-style rendering:
+
+```powershell
+node .\scripts\build-context.mjs --mode full
+```
 
 ### Check mode
 

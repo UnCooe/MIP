@@ -28,3 +28,4 @@ Records:
 - `0018-approval-artifacts-come-before-apply.md`
 - `0019-resolution-artifacts-must-capture-user-decisions-explicitly.md`
 - `0020-mip-must-be-consulted-selectively-not-always-injected.md`
+- `0021-selective-rendering-is-the-default-context-output.md`
