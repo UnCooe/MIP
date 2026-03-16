@@ -81,6 +81,14 @@ And only when the source is one of:
 - `project_activity`
 - `verified_tooling`
 
+Current merge semantics for that safe subset:
+
+- `facts.*` -> `upsert_by_target_path`
+- `preferences.response_style` -> `replace_scalar`
+- `preferences.formality` -> `replace_scalar`
+- `preferences.code_comments_language` -> `replace_scalar`
+- `preferences.variable_names_language` -> `replace_scalar`
+
 ## Local Workflow
 
 Recommended near-term flow:

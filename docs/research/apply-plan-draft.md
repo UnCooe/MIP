@@ -31,4 +31,4 @@ node .\scripts\mip.mjs plan apply --format json --output .\apply-plan.json
 ## Why This Matters
 
 This layer makes the write boundary concrete without claiming safe merge behavior that does not exist yet.
-It also makes two current constraints explicit: future merge behavior needs `target_path`, and only a narrow safe subset should even be considered for later apply semantics.
+It also makes three current constraints explicit: future merge behavior needs `target_path`, only a narrow safe subset should even be considered for later apply semantics, and each safe path needs an explicit merge strategy.

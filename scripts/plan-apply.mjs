@@ -1,20 +1,14 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import {
+  SAFE_FACT_PATHS,
+  SAFE_FACT_PREFIXES,
+  SAFE_FACT_SOURCES,
+  getMergeStrategy,
+  isSafeFactTargetPath,
+} from "./route2-policy.mjs";
 
 const ORDER = ["fact", "observation", "pending_confirmation"];
-const SAFE_FACT_PREFIXES = ["facts."];
-const SAFE_FACT_PATHS = new Set([
-  "preferences.response_style",
-  "preferences.formality",
-  "preferences.code_comments_language",
-  "preferences.variable_names_language",
-]);
-const SAFE_FACT_SOURCES = new Set([
-  "user_statement",
-  "explicit_user_input",
-  "project_activity",
-  "verified_tooling",
-]);
 
 function getTargetPath(item) {
   return item.entry.target_path || "";
@@ -22,13 +16,6 @@ function getTargetPath(item) {
 
 function getDisplayLabel(item) {
   return item.entry.target_path || item.entry.key || "(missing_target_path)";
-}
-
-function isSafeFactTargetPath(targetPath) {
-  if (SAFE_FACT_PATHS.has(targetPath)) {
-    return true;
-  }
-  return SAFE_FACT_PREFIXES.some((prefix) => targetPath.startsWith(prefix));
 }
 
 function parseArgs(argv) {
@@ -146,6 +133,13 @@ function buildPlan(bundle, inputPath) {
       safe_fact_prefixes: SAFE_FACT_PREFIXES,
       safe_fact_paths: Array.from(SAFE_FACT_PATHS),
       safe_fact_sources: Array.from(SAFE_FACT_SOURCES),
+      merge_strategies: {
+        "facts.*": "upsert_by_target_path",
+        "preferences.response_style": "replace_scalar",
+        "preferences.formality": "replace_scalar",
+        "preferences.code_comments_language": "replace_scalar",
+        "preferences.variable_names_language": "replace_scalar",
+      },
     },
     sections: {
       fact: [],
@@ -166,6 +160,7 @@ function buildPlan(bundle, inputPath) {
       source: item.entry.source,
       decision: decision.status,
       rationale: decision.rationale,
+      merge_strategy: getMergeStrategy(getTargetPath(item)),
     });
     plan.sections[item.class] = targetSection;
   }
@@ -199,6 +194,9 @@ function renderText(plan) {
       lines.push(`  source: ${item.source}`);
       lines.push(`  decision: ${item.decision}`);
       lines.push(`  rationale: ${item.rationale}`);
+      if (item.merge_strategy) {
+        lines.push(`  merge_strategy: ${item.merge_strategy}`);
+      }
     }
   }
 

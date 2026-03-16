@@ -251,6 +251,8 @@ Current Route 2 drafts use `target_path` for new suggestions. Legacy `key`-based
 
 `plan apply` is intentionally narrow. Right now it only treats a small safe fact subset as future apply candidates, and leaves the rest as review-only or confirmation-required.
 
+It also exposes merge intent for that safe subset instead of hiding a default. Today the draft rules are `facts.* -> upsert_by_target_path` and the allowed `preferences.*` paths -> `replace_scalar`.
+
 ## Roadmap
 
 | Version | Focus |
