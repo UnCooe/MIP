@@ -265,6 +265,16 @@ node .\scripts\mip.mjs draft approval --input .\apply-plan.json
 
 This keeps `apply_ready`, `conflict`, and skipped states in a durable review object instead of leaving them only in terminal output.
 
+### Resolution draft mode
+
+Once you have an approval draft, you can build a separate resolution draft:
+
+```powershell
+node .\scripts\mip.mjs draft resolution --input .\.mip-approvals\approval-draft.json
+```
+
+This gives Route 2 a durable place to capture final user decisions like `approve`, `reject`, `keep_current`, `use_proposed`, or `manual_edit` before any future mutation step exists.
+
 ## Roadmap
 
 | Version | Focus |

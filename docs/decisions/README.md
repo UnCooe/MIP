@@ -26,3 +26,4 @@ Records:
 - `0016-route-2-merge-semantics-must-be-explicit-per-safe-path.md`
 - `0017-current-memory-diff-comes-before-apply.md`
 - `0018-approval-artifacts-come-before-apply.md`
+- `0019-resolution-artifacts-must-capture-user-decisions-explicitly.md`

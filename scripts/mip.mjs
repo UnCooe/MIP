@@ -19,6 +19,7 @@ Commands:
   review bundle      Print a human-readable summary from a review bundle
   plan apply         Build a non-mutating apply plan from a review bundle
   draft approval     Build a non-mutating approval artifact from an apply plan
+  draft resolution   Build a non-mutating resolution artifact from an approval draft
 
 Suggestion classes:
   fact | observation | pending_confirmation
@@ -137,6 +138,14 @@ function getApprovalDraftArgs(options) {
   return [...args, ...options.passthrough];
 }
 
+function getResolutionDraftArgs(options) {
+  const args = ["--input", options.input || resolve(process.cwd(), ".mip-approvals", "approval-draft.json")];
+  if (options.output) {
+    args.push("--output", options.output);
+  }
+  return [...args, ...options.passthrough];
+}
+
 function main() {
   const options = parseArgs(process.argv.slice(2));
   if (options.help) {
@@ -171,6 +180,11 @@ function main() {
 
   if (options.command === "draft" && options.target === "approval") {
     runScript("draft-approval.mjs", getApprovalDraftArgs(options));
+    return;
+  }
+
+  if (options.command === "draft" && options.target === "resolution") {
+    runScript("draft-resolution.mjs", getResolutionDraftArgs(options));
     return;
   }
 
