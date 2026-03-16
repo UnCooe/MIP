@@ -24,3 +24,4 @@ Records:
 - `0014-route-2-requires-target-paths-for-future-apply.md`
 - `0015-route-2-uses-an-explicit-safe-auto-merge-subset.md`
 - `0016-route-2-merge-semantics-must-be-explicit-per-safe-path.md`
+- `0017-current-memory-diff-comes-before-apply.md`

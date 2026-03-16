@@ -1,5 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
 import { resolve } from "node:path";
+import { loadMemory } from "./build-context.mjs";
 import {
   SAFE_FACT_PATHS,
   SAFE_FACT_PREFIXES,
@@ -21,6 +23,7 @@ function getDisplayLabel(item) {
 function parseArgs(argv) {
   const options = {
     input: resolve(process.cwd(), ".mip-suggestions", "review-bundle.json"),
+    memory: resolve(homedir(), ".mip", "memory.json"),
     format: "text",
     output: null,
   };
@@ -29,6 +32,11 @@ function parseArgs(argv) {
     const arg = argv[index];
     if (arg === "--input" && argv[index + 1]) {
       options.input = resolve(argv[index + 1]);
+      index += 1;
+      continue;
+    }
+    if (arg === "--memory" && argv[index + 1]) {
+      options.memory = resolve(argv[index + 1]);
       index += 1;
       continue;
     }
@@ -57,15 +65,122 @@ function parseArgs(argv) {
 
 function printHelp() {
   console.log(`Usage:
-  node .\\scripts\\plan-apply.mjs [--input <bundle-path>] [--format <text|json>] [--output <path>]
+  node .\\scripts\\plan-apply.mjs [--input <bundle-path>] [--memory <memory-path>] [--format <text|json>] [--output <path>]
 
 Defaults:
   --input ${resolve(process.cwd(), ".mip-suggestions", "review-bundle.json")}
+  --memory ${resolve(homedir(), ".mip", "memory.json")}
   --format text`);
 }
 
 function loadBundle(path) {
   return JSON.parse(readFileSync(path, "utf8"));
+}
+
+function tryLoadMemory(path) {
+  try {
+    return {
+      exists: true,
+      path,
+      memory: loadMemory(path),
+    };
+  } catch (error) {
+    return {
+      exists: false,
+      path,
+      error: error instanceof Error ? error.message : String(error),
+      memory: null,
+    };
+  }
+}
+
+function getFactEntry(memory, targetPath) {
+  const facts = Array.isArray(memory?.facts) ? memory.facts : [];
+  return facts.find((entry) => entry?.target_path === targetPath) ?? null;
+}
+
+function getScalarValue(memory, targetPath) {
+  const segments = targetPath.split(".");
+  let current = memory;
+  for (const segment of segments) {
+    if (current === null || current === undefined || typeof current !== "object") {
+      return undefined;
+    }
+    current = current[segment];
+  }
+  return current;
+}
+
+function getCurrentValue(memory, targetPath, mergeStrategy) {
+  if (!memory || !targetPath || !mergeStrategy) {
+    return { exists: false, value: undefined };
+  }
+
+  if (mergeStrategy === "upsert_by_target_path") {
+    const entry = getFactEntry(memory, targetPath);
+    if (!entry) {
+      return { exists: false, value: undefined };
+    }
+    return { exists: true, value: entry.value };
+  }
+
+  if (mergeStrategy === "replace_scalar") {
+    const value = getScalarValue(memory, targetPath);
+    if (value === undefined) {
+      return { exists: false, value: undefined };
+    }
+    return { exists: true, value };
+  }
+
+  return { exists: false, value: undefined };
+}
+
+function valuesEqual(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function classifyCurrentState(item, decision, memoryState) {
+  if (decision.status !== "eligible_for_future_apply") {
+    return {
+      status: "not_applicable",
+      rationale: "Current-memory diff is only evaluated for future-apply candidates.",
+      current_value: undefined,
+    };
+  }
+
+  if (!memoryState.exists || !memoryState.memory) {
+    return {
+      status: "memory_unavailable",
+      rationale: "Memory source could not be loaded, so apply readiness cannot be compared against current state.",
+      current_value: undefined,
+    };
+  }
+
+  const targetPath = getTargetPath(item);
+  const mergeStrategy = getMergeStrategy(targetPath);
+  const current = getCurrentValue(memoryState.memory, targetPath, mergeStrategy);
+
+  if (!current.exists) {
+    return {
+      status: "apply_ready",
+      rationale: "No current value exists at the target path for the configured merge strategy.",
+      current_value: undefined,
+    };
+  }
+
+  if (valuesEqual(current.value, item.entry.value)) {
+    return {
+      status: "no_op",
+      rationale: "Current memory already matches the suggested value.",
+      current_value: current.value,
+    };
+  }
+
+  return {
+    status: "conflict",
+    rationale: "Current memory already contains a different value at the target path.",
+    current_value: current.value,
+  };
 }
 
 function classifySuggestion(item) {
@@ -118,16 +233,25 @@ function classifySuggestion(item) {
   };
 }
 
-function buildPlan(bundle, inputPath) {
+function buildPlan(bundle, inputPath, memoryState) {
   const plan = {
     schema: "mip-apply-plan-draft/v0.1",
     input_bundle: inputPath,
+    memory_source: {
+      path: memoryState.path,
+      loaded: memoryState.exists,
+      error: memoryState.exists ? null : memoryState.error,
+    },
     created_at: new Date().toISOString(),
     summary: {
       eligible_for_future_apply: 0,
       review_only: 0,
       confirmation_required: 0,
       blocked: 0,
+      apply_ready: 0,
+      no_op: 0,
+      conflict: 0,
+      memory_unavailable: 0,
     },
     policy: {
       safe_fact_prefixes: SAFE_FACT_PREFIXES,
@@ -150,7 +274,11 @@ function buildPlan(bundle, inputPath) {
 
   for (const item of bundle.suggestions ?? []) {
     const decision = classifySuggestion(item);
+    const currentState = classifyCurrentState(item, decision, memoryState);
     plan.summary[decision.status] += 1;
+    if (currentState.status !== "not_applicable") {
+      plan.summary[currentState.status] += 1;
+    }
     const targetSection = plan.sections[item.class] ?? [];
     targetSection.push({
       file: item.file,
@@ -161,6 +289,9 @@ function buildPlan(bundle, inputPath) {
       decision: decision.status,
       rationale: decision.rationale,
       merge_strategy: getMergeStrategy(getTargetPath(item)),
+      current_state: currentState.status,
+      current_rationale: currentState.rationale,
+      current_value: currentState.current_value,
     });
     plan.sections[item.class] = targetSection;
   }
@@ -173,12 +304,17 @@ function renderText(plan) {
     "# MIP Apply Plan",
     "",
     `Input bundle: ${plan.input_bundle}`,
+    `Memory source: ${plan.memory_source.path} (${plan.memory_source.loaded ? "loaded" : "unavailable"})`,
     `Created: ${plan.created_at}`,
     `Summary: eligible_for_future_apply=${plan.summary.eligible_for_future_apply}, review_only=${plan.summary.review_only}, confirmation_required=${plan.summary.confirmation_required}, blocked=${plan.summary.blocked}`,
+    `Current state summary: apply_ready=${plan.summary.apply_ready}, no_op=${plan.summary.no_op}, conflict=${plan.summary.conflict}, memory_unavailable=${plan.summary.memory_unavailable}`,
     `Safe fact prefixes: ${plan.policy.safe_fact_prefixes.join(", ")}`,
     `Safe fact paths: ${plan.policy.safe_fact_paths.join(", ")}`,
     `Safe fact sources: ${plan.policy.safe_fact_sources.join(", ")}`,
   ];
+  if (!plan.memory_source.loaded && plan.memory_source.error) {
+    lines.push(`Memory source error: ${plan.memory_source.error}`);
+  }
 
   for (const section of ORDER) {
     const items = plan.sections[section] ?? [];
@@ -197,6 +333,11 @@ function renderText(plan) {
       if (item.merge_strategy) {
         lines.push(`  merge_strategy: ${item.merge_strategy}`);
       }
+      lines.push(`  current_state: ${item.current_state}`);
+      lines.push(`  current_rationale: ${item.current_rationale}`);
+      if (item.current_value !== undefined) {
+        lines.push(`  current_value: ${JSON.stringify(item.current_value)}`);
+      }
     }
   }
 
@@ -213,7 +354,8 @@ function renderOutput(plan, format) {
 function main() {
   const options = parseArgs(process.argv.slice(2));
   const bundle = loadBundle(options.input);
-  const plan = buildPlan(bundle, options.input);
+  const memoryState = tryLoadMemory(options.memory);
+  const plan = buildPlan(bundle, options.input, memoryState);
   const output = renderOutput(plan, options.format);
 
   if (options.output) {

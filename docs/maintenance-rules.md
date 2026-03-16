@@ -89,6 +89,13 @@ Current merge semantics for that safe subset:
 - `preferences.code_comments_language` -> `replace_scalar`
 - `preferences.variable_names_language` -> `replace_scalar`
 
+Before any future apply step, candidates should also be diffed against the current memory source:
+
+- missing current value -> `apply_ready`
+- same current value -> `no_op`
+- different current value -> `conflict`
+- missing or unreadable memory source -> `memory_unavailable`
+
 ## Local Workflow
 
 Recommended near-term flow:

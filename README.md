@@ -244,7 +244,7 @@ node .\scripts\mip.mjs plan apply
 If you want a machine-readable artifact:
 
 ```powershell
-node .\scripts\mip.mjs plan apply --format json --output .\apply-plan.json
+node .\scripts\mip.mjs plan apply --memory .\memory.json --format json --output .\apply-plan.json
 ```
 
 Current Route 2 drafts use `target_path` for new suggestions. Legacy `key`-based suggestion files are still readable, but they are not sufficient for future apply eligibility.
@@ -252,6 +252,8 @@ Current Route 2 drafts use `target_path` for new suggestions. Legacy `key`-based
 `plan apply` is intentionally narrow. Right now it only treats a small safe fact subset as future apply candidates, and leaves the rest as review-only or confirmation-required.
 
 It also exposes merge intent for that safe subset instead of hiding a default. Today the draft rules are `facts.* -> upsert_by_target_path` and the allowed `preferences.*` paths -> `replace_scalar`.
+
+`plan apply` now also compares eligible suggestions against the current memory source so it can surface `apply_ready`, `no_op`, `conflict`, and `memory_unavailable` before any future mutation step exists.
 
 ## Roadmap
 

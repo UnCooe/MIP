@@ -24,6 +24,7 @@ Suggestion classes:
 
 Options:
   --input <path>       Memory source file or bundle path when reviewing (default varies by command)
+  --memory <path>      Memory source file for apply planning diff (default: ~/.mip/memory.json)
   --cwd <path>         Target project directory (default: current working directory)
   --force              Allow AGENTS.md block append when no markers exist
   --target-path <path> Logical memory path for suggestion generation

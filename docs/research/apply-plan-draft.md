@@ -16,7 +16,7 @@ node .\scripts\mip.mjs plan apply
 Optional machine-readable form:
 
 ```powershell
-node .\scripts\mip.mjs plan apply --format json --output .\apply-plan.json
+node .\scripts\mip.mjs plan apply --memory .\memory.json --format json --output .\apply-plan.json
 ```
 
 ## Current Decision Model
@@ -28,7 +28,14 @@ node .\scripts\mip.mjs plan apply --format json --output .\apply-plan.json
 - any suggestion without `target_path`: `blocked`
 - malformed fact without evidence: `blocked`
 
+For `eligible_for_future_apply` candidates, the plan now also compares against current memory state:
+
+- `apply_ready`
+- `no_op`
+- `conflict`
+- `memory_unavailable`
+
 ## Why This Matters
 
 This layer makes the write boundary concrete without claiming safe merge behavior that does not exist yet.
-It also makes three current constraints explicit: future merge behavior needs `target_path`, only a narrow safe subset should even be considered for later apply semantics, and each safe path needs an explicit merge strategy.
+It also makes four current constraints explicit: future merge behavior needs `target_path`, only a narrow safe subset should even be considered for later apply semantics, each safe path needs an explicit merge strategy, and current-memory diffing must happen before any mutation step.
