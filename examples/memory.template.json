@@ -20,6 +20,19 @@
     "editor": "VS Code",
     "primary_tools": ["Codex", "Antigravity"],
     "work_style": "Plan first, then execute",
+    "mip_read_policy": {
+      "always_on_preferences": [
+        "response_style",
+        "formality",
+        "code_comments_language",
+        "variable_names_language",
+        "explanation_depth"
+      ],
+      "always_on_custom": [
+        "work_style",
+        "self_corrections"
+      ]
+    },
     "self_corrections": [
       "Do not infer my stable identity from hypothetical examples.",
       "If prior memory conflicts with this file, prefer this file."

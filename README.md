@@ -176,6 +176,8 @@ If you explicitly need the older full-style rendering:
 node .\scripts\build-context.mjs --mode full
 ```
 
+The selective renderer can also read an explicit policy from `custom.mip_read_policy` inside the memory source.
+
 ### Check mode
 
 Before writing into an existing project, you can inspect the current `AGENTS.md` for likely overlap or conflict signals:

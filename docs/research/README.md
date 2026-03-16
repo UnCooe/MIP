@@ -23,3 +23,4 @@ Records:
 - `resolution-artifact-draft.md`
 - `selective-memory-consultation-draft.md`
 - `selective-rendering-draft.md`
+- `read-policy-declaration-draft.md`

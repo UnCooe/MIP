@@ -17,6 +17,10 @@ Use confirmation before changing high-risk identity claims or long-term preferen
 - work_style: Plan first, then execute
 - self_corrections: Do not infer my stable identity from hypothetical examples., If prior memory conflicts with this file, prefer this file.
 
+## Active Read Policy
+- always_on_preferences: response_style, formality, code_comments_language, variable_names_language, explanation_depth
+- always_on_custom: work_style, self_corrections
+
 ## On-Demand Sections
 - Identity
 - Additional Custom Context
@@ -32,3 +36,4 @@ Use confirmation before changing high-risk identity claims or long-term preferen
 ## Additional Custom Context
 - editor: VS Code
 - primary_tools: Codex, Antigravity
+- mip_read_policy: {"always_on_preferences":["response_style","formality","code_comments_language","variable_names_language","explanation_depth"],"always_on_custom":["work_style","self_corrections"]}

@@ -127,7 +127,7 @@ function renderSection(title, data) {
 }
 
 function renderSelectiveContext(memory, options) {
-  const { alwaysOn, onDemand } = splitMemoryForConsultation(memory);
+  const { alwaysOn, onDemand, policy } = splitMemoryForConsultation(memory);
   const sections = [
     `# ${options.title}`,
     "",
@@ -140,6 +140,10 @@ function renderSelectiveContext(memory, options) {
     renderSection("Always-On Preferences", alwaysOn.preferences),
     "",
     renderSection("Always-On Corrections And Work Style", alwaysOn.custom),
+    "",
+    "## Active Read Policy",
+    `- always_on_preferences: ${Array.from(policy.always_on_preferences).join(", ") || "None"}`,
+    `- always_on_custom: ${Array.from(policy.always_on_custom).join(", ") || "None"}`,
     "",
     "## On-Demand Sections",
   ];
