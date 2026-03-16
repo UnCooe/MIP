@@ -21,3 +21,4 @@ Records:
 - `current-memory-diff-draft.md`
 - `approval-artifact-draft.md`
 - `resolution-artifact-draft.md`
+- `selective-memory-consultation-draft.md`

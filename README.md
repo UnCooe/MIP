@@ -99,6 +99,18 @@ const memory = existsSync(path) ? JSON.parse(readFileSync(path, "utf-8")) : {};
 
 Think of it as `.editorconfig` for AI memory.
 
+## How MIP should be used
+
+MIP should not be treated as an always-injected context blob.
+
+The better model is:
+
+- keep MIP available as a governed memory source
+- inject only stable always-on rules by default
+- consult additional memory selectively when the task actually depends on it
+
+This keeps user memory relevant without turning every task into a profile-heavy prompt.
+
 ## Adoption paths
 
 The easiest tools to support MIP are:

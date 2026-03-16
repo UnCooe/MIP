@@ -27,3 +27,4 @@ Records:
 - `0017-current-memory-diff-comes-before-apply.md`
 - `0018-approval-artifacts-come-before-apply.md`
 - `0019-resolution-artifacts-must-capture-user-decisions-explicitly.md`
+- `0020-mip-must-be-consulted-selectively-not-always-injected.md`
