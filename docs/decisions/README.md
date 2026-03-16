@@ -30,3 +30,4 @@ Records:
 - `0020-mip-must-be-consulted-selectively-not-always-injected.md`
 - `0021-selective-rendering-is-the-default-context-output.md`
 - `0022-read-policy-can-be-declared-in-memory-source.md`
+- `0023-memory-intake-accepts-open-ended-user-provided-sources.md`

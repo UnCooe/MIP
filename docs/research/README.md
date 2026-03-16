@@ -24,3 +24,4 @@ Records:
 - `selective-memory-consultation-draft.md`
 - `selective-rendering-draft.md`
 - `read-policy-declaration-draft.md`
+- `memory-intake-draft.md`
