@@ -31,3 +31,4 @@ Records:
 - `0021-selective-rendering-is-the-default-context-output.md`
 - `0022-read-policy-can-be-declared-in-memory-source.md`
 - `0023-memory-intake-accepts-open-ended-user-provided-sources.md`
+- `0024-guided-intake-produces-a-draft-before-initial-memory.md`

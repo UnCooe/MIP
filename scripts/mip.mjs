@@ -20,6 +20,8 @@ Commands:
   plan apply         Build a non-mutating apply plan from a review bundle
   draft approval     Build a non-mutating approval artifact from an apply plan
   draft resolution   Build a non-mutating resolution artifact from an approval draft
+  draft intake       Build a non-mutating intake draft from user-provided sources
+  build memory       Build an initial memory.json candidate from an intake draft
 
 Suggestion classes:
   fact | observation | pending_confirmation
@@ -146,6 +148,22 @@ function getResolutionDraftArgs(options) {
   return [...args, ...options.passthrough];
 }
 
+function getIntakeDraftArgs(options) {
+  const args = [];
+  if (options.output) {
+    args.push("--output", options.output);
+  }
+  return [...args, ...options.passthrough];
+}
+
+function getBuildMemoryArgs(options) {
+  const args = ["--input", options.input || resolve(process.cwd(), ".mip-intake", "intake-draft.json")];
+  if (options.output) {
+    args.push("--output", options.output);
+  }
+  return [...args, ...options.passthrough];
+}
+
 function main() {
   const options = parseArgs(process.argv.slice(2));
   if (options.help) {
@@ -185,6 +203,16 @@ function main() {
 
   if (options.command === "draft" && options.target === "resolution") {
     runScript("draft-resolution.mjs", getResolutionDraftArgs(options));
+    return;
+  }
+
+  if (options.command === "draft" && options.target === "intake") {
+    runScript("draft-intake.mjs", getIntakeDraftArgs(options));
+    return;
+  }
+
+  if (options.command === "build" && options.target === "memory") {
+    runScript("build-initial-memory.mjs", getBuildMemoryArgs(options));
     return;
   }
 

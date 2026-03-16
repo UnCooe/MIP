@@ -25,3 +25,4 @@ Records:
 - `selective-rendering-draft.md`
 - `read-policy-declaration-draft.md`
 - `memory-intake-draft.md`
+- `guided-intake-draft.md`

@@ -178,6 +178,18 @@ node .\scripts\build-context.mjs --mode full
 
 The selective renderer can also read an explicit policy from `custom.mip_read_policy` inside the memory source.
 
+### Guided intake workflow
+
+If you are starting from raw materials instead of an existing `memory.json`, use the intake flow:
+
+```powershell
+node .\scripts\mip.mjs draft intake --source-file .\resume.md --source-file .\assistant-rules.md
+node .\scripts\mip.mjs build memory --input .\.mip-intake\intake-draft.json --output $HOME\.mip\memory.json
+```
+
+The first step builds a structured intake draft from open-ended user-provided sources.
+The second step turns that draft into an initial `memory.json` candidate.
+
 ### Check mode
 
 Before writing into an existing project, you can inspect the current `AGENTS.md` for likely overlap or conflict signals:
