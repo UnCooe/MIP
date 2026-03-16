@@ -26,3 +26,4 @@ Records:
 - `read-policy-declaration-draft.md`
 - `memory-intake-draft.md`
 - `guided-intake-draft.md`
+- `intake-review-draft.md`

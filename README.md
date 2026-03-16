@@ -184,11 +184,13 @@ If you are starting from raw materials instead of an existing `memory.json`, use
 
 ```powershell
 node .\scripts\mip.mjs draft intake --source-file .\resume.md --source-file .\assistant-rules.md
+node .\scripts\mip.mjs review intake --input .\.mip-intake\intake-draft.json
 node .\scripts\mip.mjs build memory --input .\.mip-intake\intake-draft.json --output $HOME\.mip\memory.json
 ```
 
 The first step builds a structured intake draft from open-ended user-provided sources.
-The second step turns that draft into an initial `memory.json` candidate.
+The second step lets you inspect what was extracted.
+The third step turns that draft into an initial `memory.json` candidate.
 
 ### Check mode
 

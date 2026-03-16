@@ -21,6 +21,7 @@ Commands:
   draft approval     Build a non-mutating approval artifact from an apply plan
   draft resolution   Build a non-mutating resolution artifact from an approval draft
   draft intake       Build a non-mutating intake draft from user-provided sources
+  review intake      Print a human-readable summary from an intake draft
   build memory       Build an initial memory.json candidate from an intake draft
 
 Suggestion classes:
@@ -164,6 +165,14 @@ function getBuildMemoryArgs(options) {
   return [...args, ...options.passthrough];
 }
 
+function getIntakeReviewArgs(options) {
+  const args = ["--input", options.input || resolve(process.cwd(), ".mip-intake", "intake-draft.json")];
+  if (options.output) {
+    args.push("--output", options.output);
+  }
+  return [...args, ...options.passthrough];
+}
+
 function main() {
   const options = parseArgs(process.argv.slice(2));
   if (options.help) {
@@ -208,6 +217,11 @@ function main() {
 
   if (options.command === "draft" && options.target === "intake") {
     runScript("draft-intake.mjs", getIntakeDraftArgs(options));
+    return;
+  }
+
+  if (options.command === "review" && options.target === "intake") {
+    runScript("review-intake.mjs", getIntakeReviewArgs(options));
     return;
   }
 
