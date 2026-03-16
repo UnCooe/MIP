@@ -18,6 +18,7 @@ Commands:
   pack suggestions   Bundle current suggestion files into a review artifact
   review bundle      Print a human-readable summary from a review bundle
   plan apply         Build a non-mutating apply plan from a review bundle
+  draft approval     Build a non-mutating approval artifact from an apply plan
 
 Suggestion classes:
   fact | observation | pending_confirmation
@@ -128,6 +129,14 @@ function getBundleScriptArgs(options) {
   return ["--input", input, ...options.passthrough];
 }
 
+function getApprovalDraftArgs(options) {
+  const args = ["--input", options.input || resolve(process.cwd(), "apply-plan.json")];
+  if (options.output) {
+    args.push("--output", options.output);
+  }
+  return [...args, ...options.passthrough];
+}
+
 function main() {
   const options = parseArgs(process.argv.slice(2));
   if (options.help) {
@@ -157,6 +166,11 @@ function main() {
 
   if (options.command === "plan" && options.target === "apply") {
     runScript('plan-apply.mjs', getBundleScriptArgs(options));
+    return;
+  }
+
+  if (options.command === "draft" && options.target === "approval") {
+    runScript("draft-approval.mjs", getApprovalDraftArgs(options));
     return;
   }
 

@@ -25,3 +25,4 @@ Records:
 - `0015-route-2-uses-an-explicit-safe-auto-merge-subset.md`
 - `0016-route-2-merge-semantics-must-be-explicit-per-safe-path.md`
 - `0017-current-memory-diff-comes-before-apply.md`
+- `0018-approval-artifacts-come-before-apply.md`

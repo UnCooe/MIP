@@ -19,3 +19,4 @@ Records:
 - `safe-auto-merge-subset-draft.md`
 - `merge-semantics-draft.md`
 - `current-memory-diff-draft.md`
+- `approval-artifact-draft.md`

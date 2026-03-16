@@ -255,6 +255,16 @@ It also exposes merge intent for that safe subset instead of hiding a default. T
 
 `plan apply` now also compares eligible suggestions against the current memory source so it can surface `apply_ready`, `no_op`, `conflict`, and `memory_unavailable` before any future mutation step exists.
 
+### Approval draft mode
+
+Once you have an apply-plan JSON artifact, you can generate a separate approval draft:
+
+```powershell
+node .\scripts\mip.mjs draft approval --input .\apply-plan.json
+```
+
+This keeps `apply_ready`, `conflict`, and skipped states in a durable review object instead of leaving them only in terminal output.
+
 ## Roadmap
 
 | Version | Focus |
