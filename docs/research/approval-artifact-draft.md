@@ -14,7 +14,7 @@ Turn apply-plan output into a durable artifact that separates:
 ## Command Shape
 
 ```powershell
-node .\scripts\mip.mjs draft approval --input .\apply-plan.json
+node .\scripts\mip.mjs draft approval --input $HOME\.mip\plans\apply-plan.json
 ```
 
 ## Output Shape

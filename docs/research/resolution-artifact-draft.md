@@ -10,7 +10,7 @@ Capture explicit user decisions before any future apply command exists.
 ## Command Shape
 
 ```powershell
-node .\scripts\mip.mjs draft resolution --input .\.mip-approvals\approval-draft.json
+node .\scripts\mip.mjs draft resolution --input $HOME\.mip\approvals\approval-draft.json
 ```
 
 ## Output Shape

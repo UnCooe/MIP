@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
-import { homedir } from "node:os";
 import { resolve } from "node:path";
 import { loadMemory } from "./build-context.mjs";
+import { getMipPath } from "./mip-paths.mjs";
 import {
   SAFE_FACT_PATHS,
   SAFE_FACT_PREFIXES,
@@ -22,8 +22,8 @@ function getDisplayLabel(item) {
 
 function parseArgs(argv) {
   const options = {
-    input: resolve(process.cwd(), ".mip-suggestions", "review-bundle.json"),
-    memory: resolve(homedir(), ".mip", "memory.json"),
+    input: getMipPath("suggestions", "review-bundle.json"),
+    memory: getMipPath("memory.json"),
     format: "text",
     output: null,
   };
@@ -68,8 +68,8 @@ function printHelp() {
   node .\\scripts\\plan-apply.mjs [--input <bundle-path>] [--memory <memory-path>] [--format <text|json>] [--output <path>]
 
 Defaults:
-  --input ${resolve(process.cwd(), ".mip-suggestions", "review-bundle.json")}
-  --memory ${resolve(homedir(), ".mip", "memory.json")}
+  --input ${getMipPath("suggestions", "review-bundle.json")}
+  --memory ${getMipPath("memory.json")}
   --format text`);
 }
 

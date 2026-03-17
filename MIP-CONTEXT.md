@@ -36,4 +36,3 @@ Use confirmation before changing high-risk identity claims or long-term preferen
 ## Additional Custom Context
 - editor: VS Code
 - primary_tools: Codex, Antigravity
-- mip_read_policy: {"always_on_preferences":["response_style","formality","code_comments_language","variable_names_language","explanation_depth"],"always_on_custom":["work_style","self_corrections"]}

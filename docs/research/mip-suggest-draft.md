@@ -15,7 +15,7 @@ node .\scripts\mip.mjs suggest observation --target-path observations.communicat
 
 ## Output
 
-The command writes one JSON file under `.mip-suggestions/` by default.
+The command writes one JSON file under `~/.mip/suggestions/` by default.
 The payload is intentionally small:
 - `schema`
 - `class`

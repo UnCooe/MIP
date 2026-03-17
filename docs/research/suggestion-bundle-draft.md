@@ -15,7 +15,7 @@ node .\scripts\mip.mjs pack suggestions
 
 ## Output
 
-By default the command reads `.mip-suggestions/` and writes `review-bundle.json` into the same directory.
+By default the command reads `~/.mip/suggestions/` and writes `review-bundle.json` into the same directory.
 The bundle includes:
 - `schema`
 - `created_at`

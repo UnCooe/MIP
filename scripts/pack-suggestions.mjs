@@ -1,9 +1,10 @@
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
+import { getMipPath } from "./mip-paths.mjs";
 
 function parseArgs(argv) {
   const options = {
-    inputDir: resolve(process.cwd(), ".mip-suggestions"),
+    inputDir: getMipPath("suggestions"),
     output: "",
   };
 
@@ -33,8 +34,8 @@ function printHelp() {
   node .\\scripts\\pack-suggestions.mjs [--input-dir <path>] [--output <path>]
 
 Defaults:
-  --input-dir ${resolve(process.cwd(), ".mip-suggestions")}
-  --output    ${resolve(process.cwd(), ".mip-suggestions", "review-bundle.json")}`);
+  --input-dir ${getMipPath("suggestions")}
+  --output    ${getMipPath("suggestions", "review-bundle.json")}`);
 }
 
 function readSuggestions(inputDir) {

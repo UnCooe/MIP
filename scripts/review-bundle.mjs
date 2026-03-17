@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { getMipPath } from "./mip-paths.mjs";
 
 const ORDER = ["fact", "observation", "pending_confirmation"];
 
@@ -9,7 +10,7 @@ function getTargetLabel(item) {
 
 function parseArgs(argv) {
   const options = {
-    input: resolve(process.cwd(), ".mip-suggestions", "review-bundle.json"),
+    input: getMipPath("suggestions", "review-bundle.json"),
     format: "text",
     output: null,
   };
@@ -49,7 +50,7 @@ function printHelp() {
   node .\\scripts\\review-bundle.mjs [--input <bundle-path>] [--format <text|markdown>] [--output <path>]
 
 Defaults:
-  --input ${resolve(process.cwd(), ".mip-suggestions", "review-bundle.json")}
+  --input ${getMipPath("suggestions", "review-bundle.json")}
   --format text`);
 }
 

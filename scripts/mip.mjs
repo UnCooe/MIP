@@ -1,7 +1,7 @@
-import { homedir } from "node:os";
 import { resolve } from "node:path";
 import { inspectAgentsFile, syncProjectContext, updateAgentsFile } from "./init-codex.mjs";
 import { spawnSync } from "node:child_process";
+import { getMipPath } from "./mip-paths.mjs";
 
 function printHelp() {
   console.log(`Usage:
@@ -51,7 +51,7 @@ function parseArgs(argv) {
     help: argv.includes("--help"),
     command: argv[0],
     target: argv[1],
-    input: resolve(homedir(), ".mip", "memory.json"),
+    input: getMipPath("memory.json"),
     cwd: process.cwd(),
     force: false,
     passthrough: [],
@@ -124,17 +124,17 @@ function runScript(scriptName, args) {
 }
 
 function getDefaultBundlePath() {
-  return resolve(process.cwd(), ".mip-suggestions", "review-bundle.json");
+  return getMipPath("suggestions", "review-bundle.json");
 }
 
 function getBundleScriptArgs(options) {
-  const defaultMemoryInput = resolve(homedir(), ".mip", "memory.json");
+  const defaultMemoryInput = getMipPath("memory.json");
   const input = options.input === defaultMemoryInput ? getDefaultBundlePath() : options.input;
   return ["--input", input, ...options.passthrough];
 }
 
 function getApprovalDraftArgs(options) {
-  const args = ["--input", options.input || resolve(process.cwd(), "apply-plan.json")];
+  const args = ["--input", options.input || getMipPath("plans", "apply-plan.json")];
   if (options.output) {
     args.push("--output", options.output);
   }
@@ -142,7 +142,7 @@ function getApprovalDraftArgs(options) {
 }
 
 function getResolutionDraftArgs(options) {
-  const args = ["--input", options.input || resolve(process.cwd(), ".mip-approvals", "approval-draft.json")];
+  const args = ["--input", options.input || getMipPath("approvals", "approval-draft.json")];
   if (options.output) {
     args.push("--output", options.output);
   }
@@ -158,7 +158,7 @@ function getIntakeDraftArgs(options) {
 }
 
 function getBuildMemoryArgs(options) {
-  const args = ["--input", options.input || resolve(process.cwd(), ".mip-intake", "intake-draft.json")];
+  const args = ["--input", options.input || getMipPath("intake", "intake-draft.json")];
   if (options.output) {
     args.push("--output", options.output);
   }
@@ -166,7 +166,7 @@ function getBuildMemoryArgs(options) {
 }
 
 function getIntakeReviewArgs(options) {
-  const args = ["--input", options.input || resolve(process.cwd(), ".mip-intake", "intake-draft.json")];
+  const args = ["--input", options.input || getMipPath("intake", "intake-draft.json")];
   if (options.output) {
     args.push("--output", options.output);
   }

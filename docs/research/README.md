@@ -1,5 +1,7 @@
 # Research Notes
 
+Read [docs/README.md](../README.md) first if you are trying to understand where this directory fits.
+
 This directory stores public research that informs MIP design choices.
 
 Use this directory for:

@@ -1,10 +1,11 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
+import { getMipPath } from "./mip-paths.mjs";
 
 function parseArgs(argv) {
   const options = {
-    input: resolve(process.cwd(), ".mip-intake", "intake-draft.json"),
-    output: resolve(process.cwd(), "memory.init.json"),
+    input: getMipPath("intake", "intake-draft.json"),
+    output: getMipPath("memory.json"),
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -33,8 +34,8 @@ function printHelp() {
   node .\\scripts\\build-initial-memory.mjs [--input <intake-draft.json>] [--output <memory.json>]
 
 Defaults:
-  --input  ${resolve(process.cwd(), ".mip-intake", "intake-draft.json")}
-  --output ${resolve(process.cwd(), "memory.init.json")}`);
+  --input  ${getMipPath("intake", "intake-draft.json")}
+  --output ${getMipPath("memory.json")}`);
 }
 
 function loadDraft(path) {

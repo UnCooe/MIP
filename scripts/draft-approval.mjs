@@ -1,10 +1,11 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
+import { getMipPath } from "./mip-paths.mjs";
 
 function parseArgs(argv) {
   const options = {
-    input: resolve(process.cwd(), "apply-plan.json"),
-    output: resolve(process.cwd(), ".mip-approvals", "approval-draft.json"),
+    input: getMipPath("plans", "apply-plan.json"),
+    output: getMipPath("approvals", "approval-draft.json"),
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -33,8 +34,8 @@ function printHelp() {
   node .\\scripts\\draft-approval.mjs [--input <apply-plan.json>] [--output <approval-draft.json>]
 
 Defaults:
-  --input  ${resolve(process.cwd(), "apply-plan.json")}
-  --output ${resolve(process.cwd(), ".mip-approvals", "approval-draft.json")}`);
+  --input  ${getMipPath("plans", "apply-plan.json")}
+  --output ${getMipPath("approvals", "approval-draft.json")}`);
 }
 
 function loadPlan(path) {

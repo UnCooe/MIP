@@ -1,5 +1,7 @@
 # Decision Records
 
+Read [docs/README.md](../README.md) first if you are trying to understand where this directory fits.
+
 This directory contains public-facing design decisions for MIP.
 
 Goals:
@@ -33,3 +35,4 @@ Records:
 - `0023-memory-intake-accepts-open-ended-user-provided-sources.md`
 - `0024-guided-intake-produces-a-draft-before-initial-memory.md`
 - `0025-intake-review-comes-before-build-memory.md`
+- `0026-user-assets-live-in-mip-home-not-the-repository.md`

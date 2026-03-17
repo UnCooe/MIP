@@ -1,9 +1,10 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { getMipPath } from "./mip-paths.mjs";
 
 function parseArgs(argv) {
   const options = {
-    input: resolve(process.cwd(), ".mip-intake", "intake-draft.json"),
+    input: getMipPath("intake", "intake-draft.json"),
     format: "text",
     output: null,
   };
@@ -43,7 +44,7 @@ function printHelp() {
   node .\\scripts\\review-intake.mjs [--input <intake-draft.json>] [--format <text|markdown>] [--output <path>]
 
 Defaults:
-  --input ${resolve(process.cwd(), ".mip-intake", "intake-draft.json")}
+  --input ${getMipPath("intake", "intake-draft.json")}
   --format text`);
 }
 

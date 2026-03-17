@@ -1,5 +1,8 @@
 # MIP Maintenance Rules
 
+This file is a current operating policy, not a historical narrative and not a research draft.
+Read [docs/README.md](./README.md) first if you are trying to understand the structure of the docs tree.
+
 This document records the current working rules for maintaining user memory outside the core MIP v0.1 spec.
 
 ## Goals

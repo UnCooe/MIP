@@ -1,5 +1,6 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
+import { getMipPath } from "./mip-paths.mjs";
 
 const CLASSES = new Set(["fact", "observation", "pending_confirmation"]);
 
@@ -111,7 +112,7 @@ function ensureValid(options) {
 
 function getDefaultOutputPath(className) {
   const stamp = new Date().toISOString().replace(/[:.]/g, "-");
-  return resolve(process.cwd(), ".mip-suggestions", `${stamp}-${className}.json`);
+  return getMipPath("suggestions", `${stamp}-${className}.json`);
 }
 
 function buildEntry(options) {

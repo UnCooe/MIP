@@ -151,6 +151,7 @@ MIP can work without MCP. For MCP-enabled apps, MIP can also be exposed through 
 - [examples/memory.template.json](./examples/memory.template.json): starter template for real local use
 - [mcp-server/](./mcp-server/): MCP proof of concept
 - [docs/maintenance-rules.md](./docs/maintenance-rules.md): current writeback policy and memory maintenance rules
+- [docs/README.md](./docs/README.md): how to read the docs tree without getting lost
 - [docs/decisions/](./docs/decisions/): public design decisions and tradeoffs
 - [docs/evolution/](./docs/evolution/): public evolution notes and framing changes
 - [docs/research/](./docs/research/): public research notes and platform capability mapping
@@ -178,19 +179,30 @@ node .\scripts\build-context.mjs --mode full
 
 The selective renderer can also read an explicit policy from `custom.mip_read_policy` inside the memory source.
 
+### User Asset Home
+
+MIP now distinguishes between:
+
+- the repository: protocol docs, schemas, and tooling
+- the user asset home: `~/.mip/`
+- project projections: `AGENTS.md` and `MIP-CONTEXT.md`
+
+If you want to migrate MIP to another machine or platform, move `~/.mip/`, not this repository and not a single generated `MIP-CONTEXT.md`.
+
 ### Guided intake workflow
 
 If you are starting from raw materials instead of an existing `memory.json`, use the intake flow:
 
 ```powershell
 node .\scripts\mip.mjs draft intake --source-file .\resume.md --source-file .\assistant-rules.md
-node .\scripts\mip.mjs review intake --input .\.mip-intake\intake-draft.json
-node .\scripts\mip.mjs build memory --input .\.mip-intake\intake-draft.json --output $HOME\.mip\memory.json
+node .\scripts\mip.mjs review intake --input $HOME\.mip\intake\intake-draft.json
+node .\scripts\mip.mjs build memory --input $HOME\.mip\intake\intake-draft.json --output $HOME\.mip\memory.json
 ```
 
 The first step builds a structured intake draft from open-ended user-provided sources.
 The second step lets you inspect what was extracted.
 The third step turns that draft into an initial `memory.json` candidate.
+The intake draft is part of the user's portable asset home, not a project-local temp file.
 
 ### Check mode
 
@@ -242,11 +254,13 @@ node .\scripts\mip.mjs sync antigravity
 
 ### Suggest mode
 
-Route 2 now includes a minimal suggestion generator that writes candidate updates into `.mip-suggestions/` instead of mutating `memory.json` directly:
+Route 2 now includes a minimal suggestion generator that writes candidate updates into `~/.mip/suggestions/` instead of mutating `memory.json` directly:
 
 ```powershell
 node .\scripts\mip.mjs suggest observation --target-path observations.communication_style --value direct --source conversation_pattern --confidence 0.78
 ```
+
+By default these suggestion artifacts now live under `~/.mip/suggestions/`.
 
 ### Review bundle mode
 
@@ -279,7 +293,7 @@ node .\scripts\mip.mjs plan apply
 If you want a machine-readable artifact:
 
 ```powershell
-node .\scripts\mip.mjs plan apply --memory .\memory.json --format json --output .\apply-plan.json
+node .\scripts\mip.mjs plan apply --memory $HOME\.mip\memory.json --format json --output $HOME\.mip\plans\apply-plan.json
 ```
 
 Current Route 2 drafts use `target_path` for new suggestions. Legacy `key`-based suggestion files are still readable, but they are not sufficient for future apply eligibility.
@@ -295,7 +309,7 @@ It also exposes merge intent for that safe subset instead of hiding a default. T
 Once you have an apply-plan JSON artifact, you can generate a separate approval draft:
 
 ```powershell
-node .\scripts\mip.mjs draft approval --input .\apply-plan.json
+node .\scripts\mip.mjs draft approval --input $HOME\.mip\plans\apply-plan.json
 ```
 
 This keeps `apply_ready`, `conflict`, and skipped states in a durable review object instead of leaving them only in terminal output.
@@ -305,7 +319,7 @@ This keeps `apply_ready`, `conflict`, and skipped states in a durable review obj
 Once you have an approval draft, you can build a separate resolution draft:
 
 ```powershell
-node .\scripts\mip.mjs draft resolution --input .\.mip-approvals\approval-draft.json
+node .\scripts\mip.mjs draft resolution --input $HOME\.mip\approvals\approval-draft.json
 ```
 
 This gives Route 2 a durable place to capture final user decisions like `approve`, `reject`, `keep_current`, `use_proposed`, or `manual_edit` before any future mutation step exists.

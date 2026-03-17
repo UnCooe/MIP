@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, extname, resolve } from "node:path";
+import { getMipPath } from "./mip-paths.mjs";
 
 const SCHEMA = "mip-intake-draft/v0.1";
 
@@ -25,7 +26,7 @@ const FIELD_MAP = new Map([
 function parseArgs(argv) {
   const options = {
     sourceFiles: [],
-    output: resolve(process.cwd(), ".mip-intake", "intake-draft.json"),
+    output: getMipPath("intake", "intake-draft.json"),
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -58,7 +59,7 @@ function printHelp() {
   node .\\scripts\\draft-intake.mjs --source-file <path> [--source-file <path> ...] [--output <path>]
 
 Defaults:
-  --output ${resolve(process.cwd(), ".mip-intake", "intake-draft.json")}`);
+  --output ${getMipPath("intake", "intake-draft.json")}`);
 }
 
 function readSource(path) {

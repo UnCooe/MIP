@@ -10,13 +10,13 @@ Make intake drafts easy to inspect before converting them into an initial memory
 ## Command Shape
 
 ```powershell
-node .\scripts\mip.mjs review intake --input .\.mip-intake\intake-draft.json
+node .\scripts\mip.mjs review intake --input $HOME\.mip\intake\intake-draft.json
 ```
 
 Optional Markdown output:
 
 ```powershell
-node .\scripts\mip.mjs review intake --format markdown --output .\intake-review.md
+node .\scripts\mip.mjs review intake --format markdown --output $HOME\.mip\intake\intake-review.md
 ```
 
 ## Review Contents

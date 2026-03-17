@@ -16,7 +16,7 @@ node .\scripts\mip.mjs plan apply
 Optional machine-readable form:
 
 ```powershell
-node .\scripts\mip.mjs plan apply --memory .\memory.json --format json --output .\apply-plan.json
+node .\scripts\mip.mjs plan apply --memory $HOME\.mip\memory.json --format json --output $HOME\.mip\plans\apply-plan.json
 ```
 
 ## Current Decision Model
